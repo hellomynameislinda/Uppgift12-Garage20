@@ -2,7 +2,7 @@
 {
     public class ParkedVehicle
     {
-        public int VehicleId { get; set; }
+        public int ParkedVehicleId { get; set; }
         public int VehicleType { get; set; }
         public string RegistrationNumber { get; set; } = string.Empty;
         public string Color { get; set; } = string.Empty;
