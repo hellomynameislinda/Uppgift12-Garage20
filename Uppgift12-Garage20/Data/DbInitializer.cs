@@ -21,7 +21,7 @@ namespace Uppgift12_Garage20.Data
         ];
 
         // Based on the Pluralsight course (ASP.Net Core 6 Fundamentals)
-        public static void Seed(ApplicationBuilder app)
+        public static void Seed(IApplicationBuilder app)
         {
             GarageContext context = app.ApplicationServices.CreateScope()
                 .ServiceProvider.GetRequiredService<GarageContext>();
