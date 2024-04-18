@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Uppgift12_Garage20.Data;
 using Uppgift12_Garage20.Models;
+using Uppgift12_Garage20.ViewModels;
 
 namespace Uppgift12_Garage20.Controllers
 {
@@ -31,7 +32,9 @@ namespace Uppgift12_Garage20.Controllers
         // GET: ParkedVehicles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ParkedVehicle.ToListAsync());
+            return View(await _context.ParkedVehicle
+                .Select(vehicle => VehicleSummaryViewModel.FromParkedVehicle(vehicle))
+                .ToListAsync());
         }
 
         // GET: ParkedVehicles/Details/5

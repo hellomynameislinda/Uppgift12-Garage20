@@ -5,6 +5,7 @@ namespace Uppgift12_Garage20.ViewModels
 {
     public class VehicleSummaryViewModel
     {
+        public int ParkedVehicleId { get; init; }
         /* Currently using the integer VehicleType.
          * This should be replaced with the string from the enum.
          */
@@ -28,6 +29,7 @@ namespace Uppgift12_Garage20.ViewModels
         public static VehicleSummaryViewModel FromParkedVehicle(ParkedVehicle vehicle)
             => new()
             {
+                ParkedVehicleId = vehicle.ParkedVehicleId,
                 VehicleType = vehicle.VehicleType,
                 RegistrationNumber = vehicle.RegistrationNumber,
                 ArrivalTime = vehicle.ArrivalTime
