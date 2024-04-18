@@ -87,7 +87,6 @@ namespace Uppgift12_Garage20.Controllers
             {
                 return NotFound();
             }
-            ViewBag.VehicleTypes = new SelectList(Enum.GetValues(typeof(VehicleType)));
             return View(parkedVehicle);
         }
 
