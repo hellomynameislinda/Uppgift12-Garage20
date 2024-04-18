@@ -13,9 +13,10 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ParkedVehicleId" />
+            <!--  include a dropdown list for selecting the vehicle type -->
             <div class="form-group">
                 <label asp-for="VehicleType" class="control-label"></label>
-                <input asp-for="VehicleType" class="form-control" />
+                <select asp-for="VehicleType" asp-items="@(new SelectList(Enum.GetValues(typeof(Uppgift12_Garage20.Models.VehicleType))))" class="form-control"></select>
                 <span asp-validation-for="VehicleType" class="text-danger"></span>
             </div>
             <div class="form-group">
