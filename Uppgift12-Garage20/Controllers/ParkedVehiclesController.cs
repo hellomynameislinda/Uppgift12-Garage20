@@ -19,6 +19,15 @@ namespace Uppgift12_Garage20.Controllers
             _context = context;
         }
 
+        // Validates wether the provided registration number is unique in the ParkedVehicle table
+        private async Task<bool> IsRegistrationNumberUnique(string registrationNumber)
+        {
+            var parkedVehicle = await _context.ParkedVehicle
+               .FirstOrDefaultAsync(v => v.RegistrationNumber.ToLower() == registrationNumber.ToLower());
+
+            return parkedVehicle == null;
+        }
+
         // GET: ParkedVehicles
         public async Task<IActionResult> Index()
         {
@@ -58,9 +67,17 @@ namespace Uppgift12_Garage20.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(parkedVehicle);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                bool isUnique = await IsRegistrationNumberUnique(parkedVehicle.RegistrationNumber);
+                if (isUnique)
+                {
+                    _context.Add(parkedVehicle);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Reg number exists!");
+                }
             }
             return View(parkedVehicle);
         }
