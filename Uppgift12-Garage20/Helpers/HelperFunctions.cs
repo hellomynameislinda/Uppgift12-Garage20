@@ -9,7 +9,7 @@
         /// </summary>
         /// <param name="arrivalTime"></param>
         /// <returns>TimeSpan object</returns>
-        public TimeSpan ParkedTimeAmount(DateTime arrivalTime)
+        public static TimeSpan ParkedTimeAmount(DateTime arrivalTime)
         {
             return ParkedTimeAmount(arrivalTime, DateTime.Now);
         }
@@ -22,7 +22,7 @@
         /// <param name="arrivalTime"></param>
         /// <param name="departureTime"></param>
         /// <returns>TimeSpan object</returns>
-        public TimeSpan ParkedTimeAmount(DateTime arrivalTime, DateTime departureTime)
+        public static TimeSpan ParkedTimeAmount(DateTime arrivalTime, DateTime departureTime)
         {
             if (departureTime < arrivalTime)
                 throw new ArgumentException("Departure time cannot be before arrival time");
