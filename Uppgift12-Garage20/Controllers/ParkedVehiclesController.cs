@@ -52,15 +52,21 @@ namespace Uppgift12_Garage20.Controllers
             return View(parkedVehicle);
         }
 
-        // GET: ParkedVehicles/Create
+        /// <summary>
+        /// Displays the view for creating a new parked vehicle.
+        /// </summary>
+        /// <returns>The view for creating a new parked vehicle.</returns>
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: ParkedVehicles/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        /// <summary>
+        /// Creates a new parked vehicle.
+        /// </summary>
+        /// <param name="parkedVehicle">The parked vehicle to create.</param>
+        /// <returns>The action result.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ParkedVehicleId,VehicleType,RegistrationNumber,Color,Make,Model,NumberOfWheels,ArrivalTime")] ParkedVehicle parkedVehicle)
