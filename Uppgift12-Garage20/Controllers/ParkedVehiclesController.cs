@@ -12,6 +12,8 @@ namespace Uppgift12_Garage20.Controllers
 {
     public class ParkedVehiclesController : Controller
     {
+        public decimal PricePerHour { get; set; } = 30.00m;
+
         private readonly GarageContext _context;
 
         public ParkedVehiclesController(GarageContext context)
@@ -189,7 +191,8 @@ namespace Uppgift12_Garage20.Controllers
 
             var recieptModel = new Reciept(parkedVehicle.ParkedVehicleId,
                     parkedVehicle.RegistrationNumber,
-                    parkedVehicle.ArrivalTime);
+                    parkedVehicle.ArrivalTime,
+                    PricePerHour);
 
             return View(recieptModel);
         }
