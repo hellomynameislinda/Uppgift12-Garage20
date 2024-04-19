@@ -27,7 +27,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=ParkedVehicles}/{action=Index}/{id?}");
 
 // Seed the database if empty
 DbInitializer.Seed(app);

@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Uppgift12_Garage20.Data;
 using Uppgift12_Garage20.Models;
+using Uppgift12_Garage20.ViewModels;
 
 namespace Uppgift12_Garage20.Controllers
 {
     public class ParkedVehiclesController : Controller
     {
+        public decimal PricePerHour { get; set; } = 30.00m;
+
         private readonly GarageContext _context;
 
         public ParkedVehiclesController(GarageContext context)
@@ -31,7 +34,9 @@ namespace Uppgift12_Garage20.Controllers
         // GET: ParkedVehicles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ParkedVehicle.ToListAsync());
+            return View(await _context.ParkedVehicle
+                .Select(vehicle => new VehicleSummaryViewModel(vehicle))
+                .ToListAsync());
         }
 
         // GET: ParkedVehicles/Details/5
@@ -134,7 +139,10 @@ namespace Uppgift12_Garage20.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                // For a successful edit, redirect to details page with success message
+                TempData["success"] = $"Successfully edited vehicle <b>{parkedVehicle.RegistrationNumber}</b>";
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = parkedVehicle.ParkedVehicleId });
             }
             return View(parkedVehicle);
         }
@@ -170,6 +178,29 @@ namespace Uppgift12_Garage20.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: ParkedVehicles/Reciept/5
+        public async Task<IActionResult> Reciept(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var parkedVehicle = await _context.ParkedVehicle
+                .FirstOrDefaultAsync(m => m.ParkedVehicleId == id);
+            if (parkedVehicle == null)
+            {
+                return NotFound();
+            }
+
+            var recieptModel = new Reciept(parkedVehicle.ParkedVehicleId,
+                    parkedVehicle.RegistrationNumber,
+                    parkedVehicle.ArrivalTime,
+                    PricePerHour);
+
+            return View(recieptModel);
         }
 
         private bool ParkedVehicleExists(int id)
