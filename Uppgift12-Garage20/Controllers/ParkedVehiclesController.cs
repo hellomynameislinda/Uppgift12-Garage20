@@ -33,7 +33,7 @@ namespace Uppgift12_Garage20.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.ParkedVehicle
-                .Select(vehicle => VehicleSummaryViewModel.FromParkedVehicle(vehicle))
+                .Select(vehicle => new VehicleSummaryViewModel(vehicle))
                 .ToListAsync());
         }
 
