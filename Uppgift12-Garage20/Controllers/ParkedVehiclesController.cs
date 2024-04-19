@@ -148,8 +148,8 @@ namespace Uppgift12_Garage20.Controllers
             return View(parkedVehicle);
         }
 
-        // GET: ParkedVehicles/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: ParkedVehicles/EndParking/5
+        public async Task<IActionResult> EndParking(int? id)
         {
             if (id == null)
             {
@@ -166,10 +166,10 @@ namespace Uppgift12_Garage20.Controllers
             return View(parkedVehicle);
         }
 
-        // POST: ParkedVehicles/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: ParkedVehicles/EndParking/5
+        [HttpPost, ActionName("EndParking")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> OnEndParkingConfirmed(int id)
         {
             var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
             if (parkedVehicle != null)
