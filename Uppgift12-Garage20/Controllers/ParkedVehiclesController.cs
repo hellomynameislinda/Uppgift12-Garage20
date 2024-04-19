@@ -187,12 +187,9 @@ namespace Uppgift12_Garage20.Controllers
                 return NotFound();
             }
 
-            var recieptModel = new Reciept
-            {
-                ParkedVehicleId = parkedVehicle.ParkedVehicleId,
-                ArrivalTime = parkedVehicle.ArrivalTime
-
-            };
+            var recieptModel = new Reciept(parkedVehicle.ParkedVehicleId,
+                    parkedVehicle.RegistrationNumber,
+                    parkedVehicle.ArrivalTime);
 
             return View(recieptModel);
         }

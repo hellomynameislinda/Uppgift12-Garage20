@@ -30,5 +30,15 @@
 
             return parkedTime;
         }
+
+
+        public static decimal CostCalculation(TimeSpan parkedTime, decimal pricePerHour)
+        {
+            decimal totalCost;
+
+            totalCost = (decimal)parkedTime.TotalHours * pricePerHour;
+
+            return totalCost;
+        }
     }
 }
