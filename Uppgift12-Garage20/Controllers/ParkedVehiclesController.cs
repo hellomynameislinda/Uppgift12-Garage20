@@ -172,6 +172,31 @@ namespace Uppgift12_Garage20.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: ParkedVehicles/Reciept/5
+        public async Task<IActionResult> Reciept(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var parkedVehicle = await _context.ParkedVehicle
+                .FirstOrDefaultAsync(m => m.ParkedVehicleId == id);
+            if (parkedVehicle == null)
+            {
+                return NotFound();
+            }
+
+            var recieptModel = new Reciept
+            {
+                ParkedVehicleId = parkedVehicle.ParkedVehicleId,
+                ArrivalTime = parkedVehicle.ArrivalTime
+
+            };
+
+            return View(recieptModel);
+        }
+
         private bool ParkedVehicleExists(int id)
         {
             return _context.ParkedVehicle.Any(e => e.ParkedVehicleId == id);
