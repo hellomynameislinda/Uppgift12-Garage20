@@ -21,7 +21,7 @@ namespace Uppgift12_Garage20.ViewModels
         /// </summary>
         /// <param name="vehicle">The ParkedVehicle to view.</param>
         public VehicleSummaryViewModel(ParkedVehicle vehicle)
-        {
+            {
             ParkedVehicleId = vehicle.ParkedVehicleId;
             VehicleTypeName = vehicle.VehicleType.ToString();
             RegistrationNumber = vehicle.RegistrationNumber;

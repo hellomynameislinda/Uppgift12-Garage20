@@ -55,10 +55,7 @@ namespace Uppgift12_Garage20.Controllers
             return View(parkedVehicle);
         }
 
-        /// <summary>
-        /// Displays the view for creating a new parked vehicle.
-        /// </summary>
-        /// <returns>The view for creating a new parked vehicle.</returns>
+        // GET: ParkedVehicles/Create
         public IActionResult Create()
         {
             return View();
