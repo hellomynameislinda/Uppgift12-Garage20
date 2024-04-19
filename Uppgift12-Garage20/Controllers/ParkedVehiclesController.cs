@@ -57,21 +57,23 @@ namespace Uppgift12_Garage20.Controllers
             return View(parkedVehicle);
         }
 
-        // GET: ParkedVehicles/Create
-        public IActionResult Create()
+        /// <summary>
+        /// Displays the view for parking a new vehicle.
+        /// </summary>
+        /// <returns>The view for parking a vehicle.</returns>
+        public IActionResult Park()
         {
             return View();
         }
 
-
         /// <summary>
-        /// Creates a new parked vehicle.
-        /// </summary>
-        /// <param name="parkedVehicle">The parked vehicle to create.</param>
+        /// Adds a new parked vehicle
+        /// </summary>s
+        /// <param name="parkedVehicle">The vehicle to park</param>
         /// <returns>The action result.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ParkedVehicleId,VehicleType,RegistrationNumber,Color,Make,Model,NumberOfWheels,ArrivalTime")] ParkedVehicle parkedVehicle)
+        public async Task<IActionResult> Park([Bind("ParkedVehicleId,VehicleType,RegistrationNumber,Color,Make,Model,NumberOfWheels")] ParkedVehicle parkedVehicle)
         {
             if (ModelState.IsValid)
             {
@@ -84,9 +86,10 @@ namespace Uppgift12_Garage20.Controllers
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("Reg number exists!");
+                    ModelState.AddModelError("ParkingError", "A vehicle with that registration number is already in the garage");
                 }
             }
+            
             return View(parkedVehicle);
         }
 

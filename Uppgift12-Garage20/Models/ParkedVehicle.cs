@@ -22,6 +22,6 @@ namespace Uppgift12_Garage20.Models
 
         [DisplayName("Arrival Time")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
-        public DateTime ArrivalTime { get; init; }
+        public DateTime ArrivalTime { get; init; } = DateTime.Now;
     }
 }
