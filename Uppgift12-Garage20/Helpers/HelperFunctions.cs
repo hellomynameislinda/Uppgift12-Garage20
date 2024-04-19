@@ -16,11 +16,10 @@
         /// <summary>
         /// Accepts two DateTime-objects and returns a TimeSpan-object of 
         /// time passed between arrival and departure.
-        /// Note: Passing an arrivalTime that is later than the departureTime
-        /// will cause an exception to be thrown.
         /// </summary>
         /// <param name="arrivalTime"></param>
         /// <param name="departureTime"></param>
+        /// <exception cref="ArgumentException">When departureTime is ahead of arrivalTime.</exception>
         /// <returns>TimeSpan object</returns>
         public static TimeSpan ParkedTimeAmount(DateTime arrivalTime, DateTime departureTime)
         {

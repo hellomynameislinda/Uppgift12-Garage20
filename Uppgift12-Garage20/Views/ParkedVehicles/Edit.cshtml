@@ -13,14 +13,15 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ParkedVehicleId" />
+            <!--  include a dropdown list for selecting the vehicle type -->
             <div class="form-group">
                 <label asp-for="VehicleType" class="control-label"></label>
-                <input asp-for="VehicleType" class="form-control" />
+                <select asp-for="VehicleType" asp-items="@(new SelectList(Enum.GetValues(typeof(VehicleType))))" class="form-control"></select>
                 <span asp-validation-for="VehicleType" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="RegistrationNumber" class="control-label"></label>
-                <input asp-for="RegistrationNumber" class="form-control" />
+                <input readonly asp-for="RegistrationNumber" class="form-control" />
                 <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -45,7 +46,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ArrivalTime" class="control-label"></label>
-                <input asp-for="ArrivalTime" class="form-control" />
+                <input readonly asp-for="ArrivalTime" class="form-control" />
                 <span asp-validation-for="ArrivalTime" class="text-danger"></span>
             </div>
             <div class="form-group">
