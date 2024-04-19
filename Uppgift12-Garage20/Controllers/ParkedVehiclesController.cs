@@ -134,7 +134,10 @@ namespace Uppgift12_Garage20.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                // For a successful edit, redirect to details page with success message
+                TempData["success"] = $"Successfully edited vehicle <b>{parkedVehicle.RegistrationNumber}</b>";
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = parkedVehicle.ParkedVehicleId });
             }
             return View(parkedVehicle);
         }
