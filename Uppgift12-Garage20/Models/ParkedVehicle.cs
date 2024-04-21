@@ -1,26 +1,37 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Uppgift12_Garage20.Models
 {
+    [ModelMetadataType(typeof(VehicleModelMetaData))]
     public class ParkedVehicle
     {
         public int ParkedVehicleId { get; set; }
-
-        [DisplayName("Vehicle Type")]
         public VehicleType VehicleType { get; set; }
-
-        [DisplayName("Registration Number")]
-        public string RegistrationNumber { get; set; } = string.Empty;
-
+        public string RegistrationNumber { get; init; } = string.Empty;
         public string Color { get; set; } = string.Empty;
         public string Make { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
+        public int NumberOfWheels { get; set; }
+        public DateTime ArrivalTime { get; init; } = DateTime.Now;
+    }
 
-        [DisplayName("Number Of Wheels")]
+    /* Metadata class: Provides a way to attach the attributes (like Display) to properties
+     * in only one place and then reuse them using ModelMetadataType.
+     */
+    public class VehicleModelMetaData
+    {
+        [Display(Name = "Type of Vehicle", ShortName = "Type")]
+        public VehicleType VehicleType { get; set; }
+
+        [Display(Name = "Registration Number", ShortName = "Reg. No.")]
+        public string RegistrationNumber { get; init; } = string.Empty;
+
+        [Display(Name = "Number of Wheels", ShortName = "Wheels")]
         public int NumberOfWheels { get; set; }
 
-        [DisplayName("Arrival Time")]
+        [Display(Name = "Arrival Time", ShortName = "Arrived")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         public DateTime ArrivalTime { get; init; } = DateTime.Now;
     }
