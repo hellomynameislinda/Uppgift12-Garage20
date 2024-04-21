@@ -34,5 +34,13 @@ namespace Uppgift12_Garage20.Models
         [Display(Name = "Arrival Time", ShortName = "Arrived")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         public DateTime ArrivalTime { get; init; } = DateTime.Now;
+
+        [Display(Name = "Total Time Parked")]
+        [DisplayFormat(DataFormatString = @"{0:%d} days {0:%h} hours {0:%m} minutes")]
+        public TimeSpan TotalParkingTime { get; private set; }
+
+        [Display(Name = "Total Cost")]
+        [DisplayFormat(DataFormatString = "{0:N0}:-")]
+        public decimal TotalCost { get; private set; }
     }
 }
