@@ -1,8 +1,10 @@
-﻿using Uppgift12_Garage20.Helpers;
+﻿using Microsoft.AspNetCore.Mvc;
+using Uppgift12_Garage20.Helpers;
 using Uppgift12_Garage20.Models;
 
 namespace Uppgift12_Garage20.ViewModels
 {
+    [ModelMetadataType(typeof(VehicleModelMetaData))]
     public class VehicleSummaryViewModel
     {
         public int ParkedVehicleId { get; init; }
@@ -10,7 +12,7 @@ namespace Uppgift12_Garage20.ViewModels
         public string RegistrationNumber { get; init; } = string.Empty;
         public DateTime ArrivalTime { get; init; }
 
-        public TimeSpan ParkedTimeAmount =>
+        public TimeSpan TotalParkingTime =>
             HelperFunctions.ParkedTimeAmount(ArrivalTime);
 
         // Empty constructor if still needed somewhere in the future

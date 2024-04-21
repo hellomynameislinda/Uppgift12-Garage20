@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.ArrivalTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ParkedTimeAmount)
+                @Html.DisplayNameFor(model => model.TotalParkingTime)
             </th>
             <th></th>
         </tr>
@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.ArrivalTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ParkedTimeAmount)
+                @Html.DisplayFor(modelItem => item.TotalParkingTime)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ParkedVehicleId">Edit</a> |
