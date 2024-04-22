@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Park Vehicle";
+    bool spaceAvailable = ViewBag.SpaceAvailable ?? true;
 }
 
 <h1>Park a vehicle</h1>
@@ -43,7 +44,14 @@
                 <span asp-validation-for="NumberOfWheels" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
-                <input type="submit" value="Start Parking" class="btn btn-primary" />
+                @if (spaceAvailable)
+                {
+                    <input type="submit" value="Start Parking" class="btn btn-primary" />
+                }
+                else
+                {
+                    <input type="submit" value="Garage is full" class="btn btn-primary" disabled />
+                }
             </div>
             <div class="mb-3">
                 <span class="text-danger">@Html.ValidationMessage("ParkingError")</span>

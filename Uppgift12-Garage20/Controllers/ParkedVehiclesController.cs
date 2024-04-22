@@ -15,6 +15,7 @@ namespace Uppgift12_Garage20.Controllers
     public class ParkedVehiclesController : Controller
     {
         public decimal PricePerHour { get; set; } = 30.00m;
+        public const int GarageMaxSpaces = 5;
 
         private readonly GarageContext _context;
 
@@ -35,6 +36,8 @@ namespace Uppgift12_Garage20.Controllers
         // GET: ParkedVehicles
         public async Task<IActionResult> Index()
         {
+            ViewBag.SpaceAvailable = await SpaceAvailable();
+
             return View(await _context.ParkedVehicle
                 .Select(vehicle => new VehicleSummaryViewModel(vehicle))
                 .ToListAsync());
@@ -62,10 +65,13 @@ namespace Uppgift12_Garage20.Controllers
         /// Displays the view for parking a new vehicle.
         /// </summary>
         /// <returns>The view for parking a vehicle.</returns>
-        public IActionResult Park()
+        public async Task<IActionResult> Park()
         {
+            ViewBag.SpaceAvailable = await SpaceAvailable();
+
             return View();
         }
+
 
         /// <summary>
         /// Adds a new parked vehicle
@@ -76,7 +82,7 @@ namespace Uppgift12_Garage20.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Park([Bind("ParkedVehicleId,VehicleType,RegistrationNumber,Color,Make,Model,NumberOfWheels")] ParkedVehicle parkedVehicle)
         {
-            if (ModelState.IsValid)
+        if (ModelState.IsValid)
             {
                 bool isUnique = await IsRegistrationNumberUnique(parkedVehicle.RegistrationNumber);
                 if (isUnique)
@@ -214,5 +220,12 @@ namespace Uppgift12_Garage20.Controllers
         {
             return _context.ParkedVehicle.Any(e => e.ParkedVehicleId == id);
         }
+
+        private async Task<bool> SpaceAvailable()
+        {
+            var noOfParkedVehicles = await _context.ParkedVehicle.CountAsync();
+            return noOfParkedVehicles < GarageMaxSpaces;
+        }
+
     }
 }
