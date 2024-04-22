@@ -6,7 +6,7 @@ namespace Uppgift12_Garage20.Services
     public class GarageContentService : IGarageContentService
     {
         private readonly GarageContext _context;
-        public const int GarageMaxSpaces = 5;
+        public const int GarageMaxSpaces = 10;
 
         public GarageContentService(GarageContext context)
         {
