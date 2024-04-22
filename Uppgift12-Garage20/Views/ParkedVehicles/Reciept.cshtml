@@ -2,14 +2,12 @@
 
 @{
     ViewData["Title"] = "Reciept";
-
-    Layout = "_PrintLayout";
 }
 
-<h1>Kvitto</h1>
+<h1>Reciept</h1>
 
 <div>
-    <h4>ParkedVehicle</h4>
+    <h4>Reciept for parked vehicle @Html.DisplayFor(model => model.RegistrationNumber)</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">

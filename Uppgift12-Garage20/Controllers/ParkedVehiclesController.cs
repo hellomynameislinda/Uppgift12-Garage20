@@ -9,19 +9,21 @@ using Microsoft.EntityFrameworkCore;
 using Uppgift12_Garage20.Data;
 using Uppgift12_Garage20.Models;
 using Uppgift12_Garage20.ViewModels;
+using Uppgift12_Garage20.Services;
 
 namespace Uppgift12_Garage20.Controllers
 {
     public class ParkedVehiclesController : Controller
     {
         public decimal PricePerHour { get; set; } = 30.00m;
-        public const int GarageMaxSpaces = 5;
 
         private readonly GarageContext _context;
+        private readonly IGarageContentService _garageContentService;
 
-        public ParkedVehiclesController(GarageContext context)
+        public ParkedVehiclesController(GarageContext context, IGarageContentService garageContentService)
         {
             _context = context;
+            _garageContentService = garageContentService;
         }
 
         // Validates wether the provided registration number is unique in the ParkedVehicle table
@@ -36,7 +38,7 @@ namespace Uppgift12_Garage20.Controllers
         // GET: ParkedVehicles
         public async Task<IActionResult> Index()
         {
-            ViewBag.SpaceAvailable = await SpaceAvailable();
+            ViewBag.NoOfSpacesAvailable = await _garageContentService.NoOfSpacesAvailable();
 
             return View(await _context.ParkedVehicle
                 .Select(vehicle => new VehicleSummaryViewModel(vehicle))
@@ -67,7 +69,7 @@ namespace Uppgift12_Garage20.Controllers
         /// <returns>The view for parking a vehicle.</returns>
         public async Task<IActionResult> Park()
         {
-            ViewBag.SpaceAvailable = await SpaceAvailable();
+            ViewBag.NoOfSpacesAvailable = await _garageContentService.NoOfSpacesAvailable();
 
             return View();
         }
@@ -82,7 +84,7 @@ namespace Uppgift12_Garage20.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Park([Bind("ParkedVehicleId,VehicleType,RegistrationNumber,Color,Make,Model,NumberOfWheels")] ParkedVehicle parkedVehicle)
         {
-        if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 bool isUnique = await IsRegistrationNumberUnique(parkedVehicle.RegistrationNumber);
                 if (isUnique)
@@ -96,7 +98,7 @@ namespace Uppgift12_Garage20.Controllers
                     ModelState.AddModelError("ParkingError", "A vehicle with that registration number is already in the garage");
                 }
             }
-            
+
             return View(parkedVehicle);
         }
 
@@ -219,12 +221,6 @@ namespace Uppgift12_Garage20.Controllers
         private bool ParkedVehicleExists(int id)
         {
             return _context.ParkedVehicle.Any(e => e.ParkedVehicleId == id);
-        }
-
-        private async Task<bool> SpaceAvailable()
-        {
-            var noOfParkedVehicles = await _context.ParkedVehicle.CountAsync();
-            return noOfParkedVehicles < GarageMaxSpaces;
         }
 
     }

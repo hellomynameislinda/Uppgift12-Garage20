@@ -2,15 +2,15 @@
 
 @{
     ViewData["Title"] = "Index";
-    bool spaceAvailable = ViewBag.SpaceAvailable ?? true;
+    int NoOfSpacesAvailable = ViewBag.NoOfSpacesAvailable;
 }
 
 <h1>Index</h1>
 
 <p>
-    @if (spaceAvailable)
+    @if (NoOfSpacesAvailable > 0)
     {
-        <a asp-action="Park">Park a vehicle</a>
+        <div><a asp-action="Park">Park a vehicle</a> - @NoOfSpacesAvailable space(s) available</div>
     }
     else
     {
@@ -18,7 +18,7 @@
             Garage is full, no more vehicles can be added until one has left the garage.
         </div>
     }
-</span>
+</p>
 <table class="table">
     <thead>
         <tr>
