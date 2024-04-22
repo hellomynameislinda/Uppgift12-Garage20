@@ -83,12 +83,11 @@ namespace Uppgift12_Garage20.Controllers
                 {
                     _context.Add(parkedVehicle);
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Vehicle parked successfully.";
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "A vehicle with that registration number is already in the garage.";
+                    ModelState.AddModelError("ParkingError", "A vehicle with that registration number is already in the garage.");
                 }
             }
             

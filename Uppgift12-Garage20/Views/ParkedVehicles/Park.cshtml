@@ -1,8 +1,9 @@
-﻿@model ParkedVehicle
+﻿@model Uppgift12_Garage20.Models.ParkedVehicle
 
 @{
     ViewData["Title"] = "Park Vehicle";
 }
+
 
 <h1>Park a vehicle</h1>
 <hr />
@@ -45,9 +46,11 @@
             <div class="form-group mb-3">
                 <input type="submit" value="Start Parking" class="btn btn-primary" />
             </div>
+         
             <div class="mb-3">
                 <span class="text-danger">@Html.ValidationMessage("ParkingError")</span>
             </div>
+            
         </form>
     </div>
 </div>
