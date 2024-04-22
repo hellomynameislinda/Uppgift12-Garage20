@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>G7 Parking App</h1>
 
 <p>
     <a asp-action="Park">Park a vehicle</a>
@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.VehicleTypeName)
+                @Html.DisplayNameFor(model => model.VehicleType)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.RegistrationNumber)
@@ -31,7 +31,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.VehicleTypeName)
+                @Html.DisplayFor(modelItem => item.VehicleType)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RegistrationNumber)
