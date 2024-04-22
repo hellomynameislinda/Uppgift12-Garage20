@@ -113,6 +113,7 @@ namespace Uppgift12_Garage20.Controllers
                 {
                     _context.Add(parkedVehicle);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = $"Successfully parked vehicle <strong>{parkedVehicle.RegistrationNumber}</strong>";
                     return RedirectToAction(nameof(Index));
                 }
                 else
