@@ -38,6 +38,6 @@ app.MapControllerRoute(
     pattern: "{controller=ParkedVehicles}/{action=Index}/{id?}");
 
 // Seed the database if empty
-DbInitializer.Seed(app);
+DbInitializer.Initialize(app);
 
 app.Run();

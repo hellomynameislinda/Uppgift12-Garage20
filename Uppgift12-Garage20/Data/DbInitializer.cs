@@ -14,17 +14,23 @@ namespace Uppgift12_Garage20.Data
         ];
 
         // Based on the Pluralsight course (ASP.Net Core 6 Fundamentals)
-        public static void Seed(IApplicationBuilder app)
+        public static void Initialize(IApplicationBuilder app)
         {
-            GarageContext context = app.ApplicationServices.CreateScope()
+            using GarageContext context = app.ApplicationServices.CreateScope()
                 .ServiceProvider.GetRequiredService<GarageContext>();
 
             // This will initialize the database only when empty
             // In the future we might want to include a more explicit reset mechanism
-            if (!context.ParkedVehicle.Any())
-            {
-                context.AddRange(SeedVehicles);
-            }
+            //if (!context.ParkedVehicle.Any())
+            //{
+            //    context.AddRange(SeedVehicles);
+            //}
+
+            // This will always delete and re-initialize the database
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+            context.AddRange(SeedVehicles);
+
             context.SaveChanges();
         }
 
