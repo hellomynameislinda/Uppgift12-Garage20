@@ -1,9 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Uppgift12_Garage20.Data;
+using Uppgift12_Garage20.Services;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<GarageContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GarageContext") ?? throw new InvalidOperationException("Connection string 'GarageContext' not found.")));
+
+builder.Services.AddScoped<IGarageContentService, GarageContentService>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

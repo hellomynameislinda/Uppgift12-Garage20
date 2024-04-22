@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    int NoOfSpacesAvailable = ViewBag.NoOfSpacesAvailable;
 }
 
 <h1>Index</h1>
@@ -19,7 +20,16 @@
     </div>
 }
 <p>
-    <a asp-action="Park">Park a vehicle</a>
+    @if (NoOfSpacesAvailable > 0)
+    {
+        <div><a asp-action="Park">Park a vehicle</a> - @NoOfSpacesAvailable space(s) available</div>
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            Garage is full, no more vehicles can be added until one has left the garage.
+        </div>
+    }
 </p>
 <form asp-action="Index" method="get">
     <div class="form-group">
