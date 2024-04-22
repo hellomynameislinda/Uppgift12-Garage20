@@ -35,14 +35,44 @@ namespace Uppgift12_Garage20.Controllers
             return parkedVehicle == null;
         }
 
-        // GET: ParkedVehicles
-        public async Task<IActionResult> Index()
+        // Retrieves a list of parked vehicles based on the specified sorting order and search string.
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewBag.NoOfSpacesAvailable = await _garageContentService.NoOfSpacesAvailable();
+            
+            ViewData["CurrentFilter"] = searchString;
+         
+            ViewData["VehicleTypeSortParam"] = sortOrder == "type_asc" ? "type_desc" : "type_asc";
+            ViewData["RegistrationSortParam"] = sortOrder == "registration_asc" ? "registration_desc" : "registration_asc";
 
-            return View(await _context.ParkedVehicle
-                .Select(vehicle => new VehicleSummaryViewModel(vehicle))
-                .ToListAsync());
+            var vehicles = _context.ParkedVehicle.AsQueryable();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                vehicles = vehicles.Where(v => v.RegistrationNumber.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "registration_asc":
+                    vehicles = vehicles.OrderBy(v => v.RegistrationNumber);
+                    break;
+                case "registration_desc":
+                    vehicles = vehicles.OrderByDescending(v => v.RegistrationNumber);
+                    break;
+                case "type_asc":
+                    vehicles = vehicles.OrderBy(v => v.VehicleType);
+                    break;
+                case "type_desc":
+                    vehicles = vehicles.OrderByDescending(v => v.VehicleType);
+                    break;
+                default:
+                    vehicles = vehicles.OrderBy(v => v.RegistrationNumber);
+                    break;
+            }
+
+            var vehicleList = await vehicles.ToListAsync();
+            return View(vehicleList.Select(vehicle => new VehicleSummaryViewModel(vehicle)).ToList());
         }
 
         // GET: ParkedVehicles/Details/5
@@ -95,7 +125,7 @@ namespace Uppgift12_Garage20.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("ParkingError", "A vehicle with that registration number is already in the garage");
+                    ModelState.AddModelError("ParkingError", "A vehicle with that registration number is already in the garage.");
                 }
             }
 
@@ -136,11 +166,13 @@ namespace Uppgift12_Garage20.Controllers
                 {
                     _context.Update(parkedVehicle);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Vehicle updated successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ParkedVehicleExists(parkedVehicle.ParkedVehicleId))
                     {
+                        TempData["ErrorMessage"] = "Vehicle not found.";
                         return NotFound();
                     }
                     else
@@ -149,7 +181,7 @@ namespace Uppgift12_Garage20.Controllers
                     }
                 }
                 // For a successful edit, redirect to details page with success message
-                TempData["success"] = $"Successfully edited vehicle <b>{parkedVehicle.RegistrationNumber}</b>";
+                TempData["success"] = $"Successfully edited vehicle {parkedVehicle.RegistrationNumber}";
                 //return RedirectToAction(nameof(Index));
                 return RedirectToAction(nameof(Details), new { id = parkedVehicle.ParkedVehicleId });
             }
@@ -186,6 +218,7 @@ namespace Uppgift12_Garage20.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Vehicle deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

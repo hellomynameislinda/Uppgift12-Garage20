@@ -6,7 +6,19 @@
 }
 
 <h1>Index</h1>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 <p>
     @if (NoOfSpacesAvailable > 0)
     {
@@ -19,14 +31,22 @@
         </div>
     }
 </p>
+<form asp-action="Index" method="get">
+    <div class="form-group">
+        <label for="searchString">Search by registration :</label>
+        <input type="text" name="searchString" class="form-control" value="@ViewData["CurrentFilter"]" />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.VehicleTypeName)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["VehicleTypeSortParam"]">Vehicle Type</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RegistrationNumber)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["RegistrationSortParam"]">Registration Number</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ArrivalTime)
@@ -34,7 +54,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.TotalParkingTime)
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>

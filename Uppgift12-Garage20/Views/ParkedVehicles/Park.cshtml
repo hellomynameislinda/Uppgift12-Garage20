@@ -1,10 +1,11 @@
-﻿@model ParkedVehicle
+﻿@model Uppgift12_Garage20.Models.ParkedVehicle
 
 @{
     ViewData["Title"] = "Park Vehicle";
 
     int NoOfSpacesAvailable = ViewBag.NoOfSpacesAvailable;
 }
+
 
 <h1>Park a vehicle</h1>
 <hr />
@@ -54,9 +55,11 @@
                     <input type="submit" value="Garage is full" class="btn btn-primary" disabled />
                 }
             </div>
+         
             <div class="mb-3">
                 <span class="text-danger">@Html.ValidationMessage("ParkingError")</span>
             </div>
+            
         </form>
     </div>
 </div>
