@@ -5,7 +5,7 @@ using Uppgift12_Garage20.Helpers;
 namespace Uppgift12_Garage20.Models
 {
     [ModelMetadataType(typeof(VehicleModelMetaData))]
-    public class Reciept
+    public class Receipt
     {
         public int ParkedVehicleId { get; set; }
         public string RegistrationNumber { get; set; } = string.Empty;
@@ -13,7 +13,7 @@ namespace Uppgift12_Garage20.Models
         public TimeSpan TotalParkingTime { get; private set; }
         public decimal TotalCost { get; private set; }
 
-        public Reciept(int parkedVehicleId, string registrationNumber, DateTime arrivalTime, decimal pricePerHour)
+        public Receipt(int parkedVehicleId, string registrationNumber, DateTime arrivalTime, decimal pricePerHour)
         {
             ParkedVehicleId = parkedVehicleId;
             RegistrationNumber = registrationNumber;

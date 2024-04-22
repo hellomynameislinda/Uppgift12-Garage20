@@ -181,8 +181,8 @@ namespace Uppgift12_Garage20.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: ParkedVehicles/Reciept/5
-        public async Task<IActionResult> Reciept(int? id)
+        // GET: ParkedVehicles/Receipt/5
+        public async Task<IActionResult> Receipt(int? id)
         {
             if (id == null)
             {
@@ -196,12 +196,12 @@ namespace Uppgift12_Garage20.Controllers
                 return NotFound();
             }
 
-            var recieptModel = new Reciept(parkedVehicle.ParkedVehicleId,
+            var receiptModel = new Receipt(parkedVehicle.ParkedVehicleId,
                     parkedVehicle.RegistrationNumber,
                     parkedVehicle.ArrivalTime,
                     PricePerHour);
 
-            return View(recieptModel);
+            return View(receiptModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
