@@ -36,7 +36,8 @@ namespace Uppgift12_Garage20.Controllers
         public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewData["CurrentFilter"] = searchString;
-            ViewData["VehicleTypeSortParam"] = String.IsNullOrEmpty(sortOrder) ? "type_desc" : "type_asc";
+         
+            ViewData["VehicleTypeSortParam"] = sortOrder == "type_asc" ? "type_desc" : "type_asc";
             ViewData["RegistrationSortParam"] = sortOrder == "registration_asc" ? "registration_desc" : "registration_asc";
 
             var vehicles = _context.ParkedVehicle.AsQueryable();
