@@ -117,7 +117,7 @@ namespace Uppgift12_Garage20.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("ParkingError", "A vehicle with that registration number is already in the garage");
+                    ModelState.AddModelError("ParkingError", "A vehicle with that registration number is already in the garage.");
                 }
             }
             
@@ -158,11 +158,13 @@ namespace Uppgift12_Garage20.Controllers
                 {
                     _context.Update(parkedVehicle);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Vehicle updated successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ParkedVehicleExists(parkedVehicle.ParkedVehicleId))
                     {
+                        TempData["ErrorMessage"] = "Vehicle not found.";
                         return NotFound();
                     }
                     else
@@ -171,7 +173,7 @@ namespace Uppgift12_Garage20.Controllers
                     }
                 }
                 // For a successful edit, redirect to details page with success message
-                TempData["success"] = $"Successfully edited vehicle <b>{parkedVehicle.RegistrationNumber}</b>";
+                TempData["success"] = $"Successfully edited vehicle {parkedVehicle.RegistrationNumber}";
                 //return RedirectToAction(nameof(Index));
                 return RedirectToAction(nameof(Details), new { id = parkedVehicle.ParkedVehicleId });
             }
@@ -208,6 +210,7 @@ namespace Uppgift12_Garage20.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Vehicle deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 
