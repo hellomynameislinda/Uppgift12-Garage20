@@ -5,7 +5,10 @@ namespace Uppgift12_Garage20.Data
     public class DbInitializer
     {
         // Use today as the time reference on every instantiation
-        private readonly DateTime _today = DateTime.Today;
+        // If it's after 10:00 AM, set this to the preceding midnight (00:00 of the current day)
+        // If it's before 10:00 AM, set this to the preceding noon (12:00 of the previous day)
+        private readonly DateTime _today = 
+            DateTime.Now.TimeOfDay > new TimeSpan(10, 00, 00) ? DateTime.Today : DateTime.Today - new TimeSpan(12, 00, 00);
 
         // Representative examples of vehicles that may be parked in the garage
         private ParkedVehicle[] SeedVehicles => [
