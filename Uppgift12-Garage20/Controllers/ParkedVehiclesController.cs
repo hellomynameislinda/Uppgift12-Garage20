@@ -32,12 +32,41 @@ namespace Uppgift12_Garage20.Controllers
             return parkedVehicle == null;
         }
 
-        // GET: ParkedVehicles
-        public async Task<IActionResult> Index()
+        // Retrieves a list of parked vehicles based on the specified sorting order and search string.
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            return View(await _context.ParkedVehicle
-                .Select(vehicle => new VehicleSummaryViewModel(vehicle))
-                .ToListAsync());
+            ViewData["CurrentFilter"] = searchString;
+            ViewData["VehicleTypeSortParam"] = String.IsNullOrEmpty(sortOrder) ? "type_desc" : "type_asc";
+            ViewData["RegistrationSortParam"] = sortOrder == "registration_asc" ? "registration_desc" : "registration_asc";
+
+            var vehicles = _context.ParkedVehicle.AsQueryable();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                vehicles = vehicles.Where(v => v.RegistrationNumber.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "registration_asc":
+                    vehicles = vehicles.OrderBy(v => v.RegistrationNumber);
+                    break;
+                case "registration_desc":
+                    vehicles = vehicles.OrderByDescending(v => v.RegistrationNumber);
+                    break;
+                case "type_asc":
+                    vehicles = vehicles.OrderBy(v => v.VehicleType);
+                    break;
+                case "type_desc":
+                    vehicles = vehicles.OrderByDescending(v => v.VehicleType);
+                    break;
+                default:
+                    vehicles = vehicles.OrderBy(v => v.RegistrationNumber);
+                    break;
+            }
+
+            var vehicleList = await vehicles.ToListAsync();
+            return View(vehicleList.Select(vehicle => new VehicleSummaryViewModel(vehicle)).ToList());
         }
 
         // GET: ParkedVehicles/Details/5
