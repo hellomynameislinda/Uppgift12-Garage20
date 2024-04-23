@@ -121,6 +121,7 @@ namespace Uppgift12_Garage20.Controllers
                 {
                     _context.Add(parkedVehicle);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = $"Successfully parked vehicle <strong>{parkedVehicle.RegistrationNumber}</strong>";
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -166,7 +167,6 @@ namespace Uppgift12_Garage20.Controllers
                 {
                     _context.Update(parkedVehicle);
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Vehicle updated successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -181,7 +181,7 @@ namespace Uppgift12_Garage20.Controllers
                     }
                 }
                 // For a successful edit, redirect to details page with success message
-                TempData["success"] = $"Successfully edited vehicle {parkedVehicle.RegistrationNumber}";
+                TempData["success"] = $"Successfully edited vehicle <strong>{parkedVehicle.RegistrationNumber}</strong>";
                 //return RedirectToAction(nameof(Index));
                 return RedirectToAction(nameof(Details), new { id = parkedVehicle.ParkedVehicleId });
             }
