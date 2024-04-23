@@ -1,65 +1,68 @@
-﻿@model Uppgift12_Garage20.Models.ParkedVehicle
+﻿@model ParkedVehicle
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Vehicle";
 }
 
-<h1>Edit</h1>
-
-<h4>ParkedVehicle</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ParkedVehicleId" />
-            <!--  include a dropdown list for selecting the vehicle type -->
-            <div class="form-group">
-                <label asp-for="VehicleType" class="control-label"></label>
-                <select asp-for="VehicleType" asp-items="@(new SelectList(Enum.GetValues(typeof(VehicleType))))" class="form-control"></select>
-                <span asp-validation-for="VehicleType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RegistrationNumber" class="control-label"></label>
-                <input readonly asp-for="RegistrationNumber" class="form-control" />
-                <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Color" class="control-label"></label>
-                <input asp-for="Color" class="form-control" />
-                <span asp-validation-for="Color" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Make" class="control-label"></label>
-                <input asp-for="Make" class="form-control" />
-                <span asp-validation-for="Make" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NumberOfWheels" class="control-label"></label>
-                <input asp-for="NumberOfWheels" class="form-control" />
-                <span asp-validation-for="NumberOfWheels" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ArrivalTime" class="control-label"></label>
-                <input readonly asp-for="ArrivalTime" class="form-control" />
-                <span asp-validation-for="ArrivalTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="col-md-9 col-lg-6 mx-auto">
+    <h1>Edit Vehicle</h1>
+    <div class="card mt-4">
+        <div class="card-header">
+            Fill in the updated vehicle details
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ParkedVehicleId" />
+                <!--  include a dropdown list for selecting the vehicle type -->
+                <div class="form-group mb-3">
+                    <label asp-for="VehicleType" class="control-label mb-1"></label>
+                    <select asp-for="VehicleType" asp-items="@(new SelectList(Enum.GetValues(typeof(VehicleType))))" class="form-select"></select>
+                    <span asp-validation-for="VehicleType" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="RegistrationNumber" class="control-label mb-1"></label>
+                    <input readonly disabled asp-for="RegistrationNumber" class="form-control" />
+                    <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Color" class="control-label mb-1"></label>
+                    <input asp-for="Color" class="form-control" />
+                    <span asp-validation-for="Color" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Make" class="control-label mb-1"></label>
+                    <input asp-for="Make" class="form-control" />
+                    <span asp-validation-for="Make" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Model" class="control-label mb-1"></label>
+                    <input asp-for="Model" class="form-control" />
+                    <span asp-validation-for="Model" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="NumberOfWheels" class="control-label mb-1"></label>
+                    <input asp-for="NumberOfWheels" min="1" class="form-control" />
+                    <span asp-validation-for="NumberOfWheels" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-4">
+                    <label asp-for="ArrivalTime" class="control-label"></label>
+                    <input readonly disabled asp-for="ArrivalTime" class="form-control" />
+                    <span asp-validation-for="ArrivalTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save Changes" class="btn btn-primary w-100" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="mt-4">
+        <a asp-action="Index" class="link-light"><i class="bi-chevron-left"></i> Back to Garage</a>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
