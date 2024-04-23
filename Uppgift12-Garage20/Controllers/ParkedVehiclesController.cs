@@ -210,7 +210,7 @@ namespace Uppgift12_Garage20.Controllers
             }
 
             await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = "Vehicle deleted successfully.";
+            TempData["SuccessMessage"] = $"Successfully ended parking for vehicle <strong>{parkedVehicle.RegistrationNumber}</strong>";
             return RedirectToAction(nameof(Index));
         }
 
