@@ -68,7 +68,10 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ParkedVehicleId" class="btn btn-primary mb-4"><i class="bi-pen"></i> Edit</a>
+    <div class="hstack gap-3 mb-2">
+        <a asp-action="Edit" asp-route-id="@Model?.ParkedVehicleId" class="btn btn-primary"><i class="bi-pen"></i> Edit</a>
+        <a asp-action="EndParking" asp-route-id="@Model?.ParkedVehicleId" class="btn btn-danger"><i class="bi-x-lg"></i> End Parking</a>
+    </div>
     <br />
     <a asp-action="Index" class="link-light"><i class="bi-chevron-left"></i> Back to Garage</a>
 </div>
