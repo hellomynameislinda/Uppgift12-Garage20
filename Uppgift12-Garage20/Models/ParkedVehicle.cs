@@ -9,10 +9,12 @@ namespace Uppgift12_Garage20.Models
     {
         public int ParkedVehicleId { get; set; }
         public VehicleType VehicleType { get; set; }
+        [StringLength(10)]
         public string RegistrationNumber { get; init; } = string.Empty;
         public string Color { get; set; } = string.Empty;
         public string Make { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
+        [Range(1, 18)]
         public int NumberOfWheels { get; set; }
         public DateTime ArrivalTime { get; init; } = DateTime.Now;
 
