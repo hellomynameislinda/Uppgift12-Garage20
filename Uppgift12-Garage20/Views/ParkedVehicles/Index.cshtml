@@ -4,10 +4,22 @@
 @{
     ViewData["Title"] = "Garage";
     var successMessage = TempData["SuccessMessage"];
-    int NoOfSpacesAvailable = ViewBag.NoOfSpacesAvailable;
+    var NoOfSpacesAvailable = ViewBag.NoOfSpacesAvailable;
 }
 
 <h1>Parked Vehicles</h1>
+
+@if (NoOfSpacesAvailable > 0)
+{
+    <div class="mt-4 fw-bold">
+        @NoOfSpacesAvailable space(s) available
+    </div>
+} else
+{
+    <div class="alert alert-warning mt-4" role="alert">
+        Garage is full, no more vehicles can be added until one has left the garage.
+    </div>
+}
 
 @if (successMessage is not null && successMessage is string)
 {
