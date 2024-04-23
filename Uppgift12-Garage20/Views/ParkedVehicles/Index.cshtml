@@ -1,83 +1,99 @@
-﻿@model IEnumerable<Uppgift12_Garage20.ViewModels.VehicleSummaryViewModel>
+﻿@using Microsoft.AspNetCore.Html
+@model IEnumerable<Uppgift12_Garage20.ViewModels.VehicleSummaryViewModel>
 
 @{
-    ViewData["Title"] = "Index";
-    int NoOfSpacesAvailable = ViewBag.NoOfSpacesAvailable;
+    ViewData["Title"] = "Garage";
+    var successMessage = TempData["SuccessMessage"];
+    var NoOfSpacesAvailable = ViewBag.NoOfSpacesAvailable;
 }
 
-<h1>G7 Parking App</h1>
-@if (TempData["SuccessMessage"] != null)
+<h1>Parked Vehicles</h1>
+
+@if (NoOfSpacesAvailable > 0)
 {
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
+    <div class="mt-4 fw-bold">
+        @NoOfSpacesAvailable space(s) available
+    </div>
+} else
+{
+    <div class="alert alert-warning mt-4" role="alert">
+        Garage is full, no more vehicles can be added until one has left the garage.
     </div>
 }
 
-@if (TempData["ErrorMessage"] != null)
+@if (successMessage is not null && successMessage is string)
 {
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
+    <div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
+        @(new HtmlString((string)successMessage))
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
-<p>
-    @if (NoOfSpacesAvailable > 0)
-    {
-        <div><a asp-action="Park">Park a vehicle</a> - @NoOfSpacesAvailable space(s) available</div>
-    }
-    else
-    {
-        <div class="alert alert-warning" role="alert">
-            Garage is full, no more vehicles can be added until one has left the garage.
+
+<div class="card bg-body-tertiary mt-4">
+    <div class="card-body">
+        <form asp-action="Index" method="get">
+            <div class="form-group vstack gap-2">
+                <label for="searchString">Search by Registration Number</label>
+                <div class="input-group mb-3">
+                    <input class="form-control" type="search" name="searchString" value="@ViewData["CurrentFilter"]" placeholder="E.g. ABC123" aria-label="Vehicle Registration Number" aria-describedby="searchBtn">
+                    <button class="btn btn-outline-primary" type="submit" id="searchBtn"><i class="bi-search"></i></button>
+                </div>
+            </div>
+        </form>
+        <div class="card overflow-auto">
+            <table class="table table-dark table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th class="col-1 ps-3 text-nowrap bg-body-secondary">
+                            <a class="link-light text-decoration-none" asp-action="Index" asp-route-sortOrder="@ViewData["VehicleTypeSortParam"]">
+                                Vehicle Type <i class="@(ViewData["VehicleTypeSortParam"].Equals("type_desc") ? "bi-sort-down" : "bi-sort-up")"></i>
+                            </a>
+                        </th>
+                        <th class="col-1 text-nowrap bg-body-secondary">
+                            <a class="link-light text-decoration-none" asp-action="Index" asp-route-sortOrder="@ViewData["RegistrationSortParam"]">
+                                Reg. Nr <i class="@(ViewData["RegistrationSortParam"].Equals("registration_desc") ? "bi-sort-down" : "bi-sort-up")"></i>
+                            </a>
+                        </th>
+                        <th class="col-1 d-none d-md-table-cell text-nowrap bg-body-secondary" scope="col">
+                            @Html.DisplayNameFor(model => model.ArrivalTime)
+                        </th>
+                        <th class="col-1 d-none d-md-table-cell text-nowrap bg-body-secondary" scope="col">
+                            @Html.DisplayNameFor(model => model.TotalParkingTime)
+                        </th>
+                        <th class="col-1 bg-body-secondary">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr onclick="location.href = '@Url.Action("Details", "ParkedVehicles", new { id = item.ParkedVehicleId})'" style="cursor: pointer">
+                            <td class="ps-3">
+                                @Html.DisplayFor(modelItem => item.VehicleType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RegistrationNumber)
+                            </td>
+                            <td class="d-none d-md-table-cell">
+                                @Html.DisplayFor(modelItem => item.ArrivalTime)
+                            </td>
+                            <td class="d-none d-md-table-cell">
+                                @Html.DisplayFor(modelItem => item.TotalParkingTime)
+                            </td>
+                            <td>
+                                <div class="hstack gap-2">
+                                    <a class="btn btn-outline-info d-inline-block" asp-action="Edit" asp-route-id="@item.ParkedVehicleId"><i class="bi-pen"></i></a>
+                                    <a class="btn btn-outline-danger d-inline-block" asp-action="EndParking" asp-route-id="@item.ParkedVehicleId"><i class="bi-x-lg"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (Model.Count() == 0)
+            {
+                <div class="p-3 fw-bold">No vehicle with that reg. number in the garage...</div>
+            }
+            <div class="card-footer bg-transparent"></div>
         </div>
-    }
-</p>
-<form asp-action="Index" method="get">
-    <div class="form-group">
-        <label for="searchString">Search by registration :</label>
-        <input type="text" name="searchString" class="form-control" value="@ViewData["CurrentFilter"]" />
     </div>
-    <button type="submit" class="btn btn-primary">Search</button>
-</form>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["VehicleTypeSortParam"]">Vehicle Type</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["RegistrationSortParam"]">Registration Number</a>
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ArrivalTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalParkingTime)
-            </th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.VehicleType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegistrationNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArrivalTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalParkingTime)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ParkedVehicleId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ParkedVehicleId">Details</a> |
-                <a asp-action="EndParking" asp-route-id="@item.ParkedVehicleId">End Parking</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+</div>
