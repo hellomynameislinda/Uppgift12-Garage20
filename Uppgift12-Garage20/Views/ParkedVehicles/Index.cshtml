@@ -5,7 +5,7 @@
     int NoOfSpacesAvailable = ViewBag.NoOfSpacesAvailable;
 }
 
-<h1>Index</h1>
+<h1>G7 Parking App</h1>
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success">
@@ -61,7 +61,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.VehicleTypeName)
+                @Html.DisplayFor(modelItem => item.VehicleType)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RegistrationNumber)
