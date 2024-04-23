@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Uppgift12_Garage20.Data;
 using Uppgift12_Garage20.Models;
 using Uppgift12_Garage20.ViewModels;
+using Uppgift12_Garage20.Services;
 
 namespace Uppgift12_Garage20.Controllers
 {
@@ -17,10 +18,12 @@ namespace Uppgift12_Garage20.Controllers
         public decimal PricePerHour { get; set; } = 30.00m;
 
         private readonly GarageContext _context;
+        private readonly IGarageContentService _garageContentService;
 
-        public ParkedVehiclesController(GarageContext context)
+        public ParkedVehiclesController(GarageContext context, IGarageContentService garageContentService)
         {
             _context = context;
+            _garageContentService = garageContentService;
         }
 
         // Validates wether the provided registration number is unique in the ParkedVehicle table
@@ -35,6 +38,8 @@ namespace Uppgift12_Garage20.Controllers
         // Retrieves a list of parked vehicles based on the specified sorting order and search string.
         public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
+            ViewBag.NoOfSpacesAvailable = await _garageContentService.NoOfSpacesAvailable();
+            
             ViewData["CurrentFilter"] = searchString;
          
             ViewData["VehicleTypeSortParam"] = sortOrder == "type_asc" ? "type_desc" : "type_asc";
@@ -92,10 +97,13 @@ namespace Uppgift12_Garage20.Controllers
         /// Displays the view for parking a new vehicle.
         /// </summary>
         /// <returns>The view for parking a vehicle.</returns>
-        public IActionResult Park()
+        public async Task<IActionResult> Park()
         {
+            ViewBag.NoOfSpacesAvailable = await _garageContentService.NoOfSpacesAvailable();
+
             return View();
         }
+
 
         /// <summary>
         /// Adds a new parked vehicle
@@ -120,7 +128,7 @@ namespace Uppgift12_Garage20.Controllers
                     ModelState.AddModelError("ParkingError", "A vehicle with that registration number is already in the garage.");
                 }
             }
-            
+
             return View(parkedVehicle);
         }
 
@@ -247,5 +255,6 @@ namespace Uppgift12_Garage20.Controllers
         {
             return _context.ParkedVehicle.Any(e => e.ParkedVehicleId == id);
         }
+
     }
 }
