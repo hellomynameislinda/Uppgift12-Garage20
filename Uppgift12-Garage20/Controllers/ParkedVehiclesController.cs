@@ -212,25 +212,25 @@ namespace Uppgift12_Garage20.Controllers
         public async Task<IActionResult> OnEndParkingConfirmed(int id)
         {
             var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
-            ReceiptViewModel receipt;
+            ParkingEndedViewModel departedVehicle;
             if (parkedVehicle is null)
             {
                 return NotFound();
             }
             else
             {
-                receipt = new(parkedVehicle, DateTime.Now, PricePerHour);
+                departedVehicle = new(parkedVehicle, DateTime.Now, PricePerHour);
                 _context.ParkedVehicle.Remove(parkedVehicle);
             }
 
             await _context.SaveChangesAsync();
             TempData["SuccessMessage"] = "Vehicle deleted successfully.";
-            return View(nameof(ParkingEnded), receipt);
+            return View(nameof(ParkingEnded), departedVehicle);
         }
 
-        public IActionResult ParkingEnded(ReceiptViewModel receipt)
+        public IActionResult ParkingEnded(ParkingEndedViewModel departedVehicle)
         {
-            return View(receipt);
+            return View(departedVehicle);
         }
 
         // POST: ParkedVehicles/EndParking/5
