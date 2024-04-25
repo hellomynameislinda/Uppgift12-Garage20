@@ -212,38 +212,39 @@ namespace Uppgift12_Garage20.Controllers
         public async Task<IActionResult> OnEndParkingConfirmed(int id)
         {
             var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
-            if (parkedVehicle != null)
+            ReceiptViewModel receipt;
+            if (parkedVehicle is null)
             {
+                return NotFound();
+            }
+            else
+            {
+                receipt = new(parkedVehicle, DateTime.Now, PricePerHour);
                 _context.ParkedVehicle.Remove(parkedVehicle);
             }
 
             await _context.SaveChangesAsync();
             TempData["SuccessMessage"] = "Vehicle deleted successfully.";
-            return RedirectToAction(nameof(Index));
+            return View(nameof(ParkingEnded), receipt);
+        }
+
+        public IActionResult ParkingEnded(ReceiptViewModel receipt)
+        {
+            return View(receipt);
+        }
+
+        // POST: ParkedVehicles/EndParking/5
+        [HttpPost, ActionName("ParkingEnded")]
+        [ValidateAntiForgeryToken]
+        public IActionResult ParkingEndedPost([Bind("RegistrationNumber,ArrivalTime,DepartureTime,TotalParkingTime,TotalCost")] ReceiptViewModel receipt)
+        {
+            return View(nameof(Receipt), receipt);
         }
 
         // GET: ParkedVehicles/Receipt/5
-        public async Task<IActionResult> Receipt(int? id)
+        public IActionResult Receipt(ReceiptViewModel receipt)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var parkedVehicle = await _context.ParkedVehicle
-                .FirstOrDefaultAsync(m => m.ParkedVehicleId == id);
-            if (parkedVehicle == null)
-            {
-                return NotFound();
-            }
-
-            var receiptModel = new ReceiptViewModel(parkedVehicle.ParkedVehicleId,
-                    parkedVehicle.RegistrationNumber,
-                    parkedVehicle.ArrivalTime,
-                    DateTime.Now,
-                    PricePerHour);
-
-            return View(receiptModel);
+            return View(receipt);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

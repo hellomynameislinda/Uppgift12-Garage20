@@ -65,7 +65,6 @@
         <input type="hidden" asp-for="ParkedVehicleId" />
         <div class="hstack gap-3 mb-4">
             <button type="submit" class="btn btn-danger"><i class="bi-x-lg"></i> End Parking</button>
-            <a asp-action="Receipt" asp-route-id="@Model.ParkedVehicleId" class="btn btn-primary"><i class="bi-printer"></i> Print Reciept</a>
         </div>
         <a asp-action="Index" class="link-light"><i class="bi-chevron-left"></i> Back to Garage</a>
     </form>

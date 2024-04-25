@@ -1,17 +1,30 @@
-﻿@model Uppgift12_Garage20.ViewModels.ReceiptViewModel
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Html
+@model Uppgift12_Garage20.ViewModels.ReceiptViewModel
 
 @{
-    ViewData["Title"] = "Receipt";
+    ViewData["Title"] = "Parking Ended";
+    var successMessage = TempData["SuccessMessage"];
 }
 
+<h1>Parking Ended</h1>
+
+@if (successMessage is not null && successMessage is string)
+{
+    <div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
+        @(new HtmlString((string)successMessage))
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<h3>Thank you for using G7 Garages!</h3>
 <div>
-    <h4>Receipt for parked vehicle @Html.DisplayFor(model => model.RegistrationNumber)</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.RegistrationNumber)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.RegistrationNumber)
         </dd>
         <dt class="col-sm-2">
@@ -39,8 +52,16 @@
             @Html.DisplayFor(model => model.TotalCost)
         </dd>
     </dl>
-    <hr />
-    <div class="mt-4">
+
+    <form asp-action="ParkingEnded">
+        <input type="hidden" asp-for="RegistrationNumber" />
+        <input type="hidden" asp-for="ArrivalTime" />
+        <input type="hidden" asp-for="DepartureTime" />
+        <input type="hidden" asp-for="TotalParkingTime" />
+        <input type="hidden" asp-for="TotalCost" />
+        <div class="hstack gap-3 mb-4">
+            <button type="submit" class="btn btn-primary"><i class="bi-printer"></i> Print Receipt</button>
+        </div>
         <a asp-action="Index" class="link-light"><i class="bi-chevron-left"></i> Back to Garage</a>
-    </div>
+    </form>
 </div>
