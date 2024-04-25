@@ -121,7 +121,6 @@ namespace Uppgift12_Garage20.Controllers
                 {
                     _context.Add(parkedVehicle);
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = $"Successfully parked vehicle <strong>{parkedVehicle.RegistrationNumber}</strong>";
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -167,6 +166,7 @@ namespace Uppgift12_Garage20.Controllers
                 {
                     _context.Update(parkedVehicle);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Vehicle updated successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -181,7 +181,7 @@ namespace Uppgift12_Garage20.Controllers
                     }
                 }
                 // For a successful edit, redirect to details page with success message
-                TempData["success"] = $"Successfully edited vehicle <strong>{parkedVehicle.RegistrationNumber}</strong>";
+                TempData["success"] = $"Successfully edited vehicle {parkedVehicle.RegistrationNumber}";
                 //return RedirectToAction(nameof(Index));
                 return RedirectToAction(nameof(Details), new { id = parkedVehicle.ParkedVehicleId });
             }
@@ -218,7 +218,7 @@ namespace Uppgift12_Garage20.Controllers
             }
 
             await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = $"Successfully ended parking for vehicle <strong>{parkedVehicle.RegistrationNumber}</strong>";
+            TempData["SuccessMessage"] = "Vehicle deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -237,9 +237,10 @@ namespace Uppgift12_Garage20.Controllers
                 return NotFound();
             }
 
-            var receiptModel = new Receipt(parkedVehicle.ParkedVehicleId,
+            var receiptModel = new ReceiptViewModel(parkedVehicle.ParkedVehicleId,
                     parkedVehicle.RegistrationNumber,
                     parkedVehicle.ArrivalTime,
+                    DateTime.Now,
                     PricePerHour);
 
             return View(receiptModel);
