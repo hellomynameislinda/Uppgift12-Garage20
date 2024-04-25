@@ -10,6 +10,7 @@ using Uppgift12_Garage20.Data;
 using Uppgift12_Garage20.Models;
 using Uppgift12_Garage20.ViewModels;
 using Uppgift12_Garage20.Services;
+using Uppgift12_Garage20.Helpers;
 
 namespace Uppgift12_Garage20.Controllers
 {
@@ -220,6 +221,7 @@ namespace Uppgift12_Garage20.Controllers
             else
             {
                 departedVehicle = new(parkedVehicle, DateTime.Now, PricePerHour);
+                TempData.Put("Receipt", new ReceiptViewModel(parkedVehicle, DateTime.Now, PricePerHour));
                 _context.ParkedVehicle.Remove(parkedVehicle);
             }
 
@@ -234,10 +236,11 @@ namespace Uppgift12_Garage20.Controllers
         }
 
         // POST: ParkedVehicles/EndParking/5
-        [HttpPost, ActionName("ParkingEnded")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ParkingEndedPost([Bind("RegistrationNumber,ArrivalTime,DepartureTime,TotalParkingTime,TotalCost")] ReceiptViewModel receipt)
+        public IActionResult ParkingEnded()
         {
+            var receipt = TempData.Get<ReceiptViewModel>("Receipt");
             return View(nameof(Receipt), receipt);
         }
 

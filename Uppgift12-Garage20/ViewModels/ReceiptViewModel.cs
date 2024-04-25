@@ -6,7 +6,8 @@ using Uppgift12_Garage20.Models;
 namespace Uppgift12_Garage20.ViewModels
 {
     [ModelMetadataType(typeof(VehicleModelMetaData))]
-    public class ReceiptViewModel
+    [Serializable()]
+    public record ReceiptViewModel
     {
         public string RegistrationNumber { get; init; } = string.Empty;
         public DateTime ArrivalTime { get; init; }

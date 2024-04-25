@@ -78,11 +78,6 @@
     </dl>
 
     <form asp-action="ParkingEnded">
-        <input type="hidden" asp-for="RegistrationNumber" />
-        <input type="hidden" asp-for="ArrivalTime" />
-        <input type="hidden" asp-for="DepartureTime" />
-        <input type="hidden" asp-for="TotalParkingTime" />
-        <input type="hidden" asp-for="TotalCost" />
         <div class="hstack gap-3 mb-4">
             <button type="submit" class="btn btn-primary"><i class="bi-printer"></i> Print Receipt</button>
         </div>
